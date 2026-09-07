@@ -8,6 +8,9 @@ public class count {
         int count = 0;
         int num = scan.nextInt();
 
+        if(num < 0) {
+            num = -(num); // it will change the negitive to positive - x - = +
+        }
         while(num > 0) {
             num = num/10;
             count++;
