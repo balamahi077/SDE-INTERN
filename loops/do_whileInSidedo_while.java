@@ -10,10 +10,11 @@ public class do_whileInSidedo_while {
             do{
                 System.out.print("* ");
                 java++;
+
             }while(java <= 4);
 
-            System.out.println();
-            index++;
+        System.out.println();
+        index++;
         }while(index <= 3);
 
     }
