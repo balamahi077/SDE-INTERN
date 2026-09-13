@@ -1,4 +1,4 @@
-package Array;
+package Array_Concept;
 
 public class ArrayUpdate {
 
@@ -6,6 +6,14 @@ public class ArrayUpdate {
         int a[] = {20, 40, 60};
         return a;
     }
+
+    /*
+    
+      Primitive datatypes are fixed sizevalues, copying them is inexpensive
+      Objects(Arrays, Strings, custom Objects) can very from a few bytes to
+      gigabytes, so java copies only their reference, not object themselves.
+
+    */
     
     public static void main(String[] args) {
         
