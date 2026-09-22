@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Layout & Garbage Collection Visualizer</title>
+<style>
+  :root {
+    --bg-main: #0f172a;
+    --panel-bg: #1e293b;
+    --text: #f8fafc;
+    --code-color: #a855f7;
+    --data-color: #eab308;
+    --stack-color: #3b82f6;
+    --heap-color: #10b981;
+    --gc-color: #f43f5e;
+    --muted: #64748b;
+  }
+
+  body {
+    margin: 0;
+    padding: 24px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-main);
+    color: var(--text);
+  }
+
+  h1 { margin-top: 0; font-size: 1.8rem; }
+  p.subtitle { color: var(--muted); margin-bottom: 24px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .panel {
+    background: var(--panel-bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    background: #334155;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: left;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+  }
+
+  button:hover:not(:disabled) { background: #475569; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  #btnStart { border-left-color: var(--code-color); }
+  #btnCall { border-left-color: var(--stack-color); }
+  #btnAlloc { border-left-color: var(--heap-color); }
+  #btnReturn { border-left-color: var(--stack-color); }
+  #btnGC { border-left-color: var(--gc-color); }
+
+  /* Memory Map Visuals */
+  .memory-map {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+  }
+
+  .segment {
+    border: 2px dashed var(--muted);
+    border-radius: 8px;
+    padding: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .segment-title {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: var(--panel-bg);
+    padding: 0 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--muted);
+  }
+
+  .block {
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Specific Segments */
+  #seg-code { border-color: var(--code-color); }
+  #seg-code .segment-title { color: var(--code-color); }
+  .block-code { background: rgba(168, 85, 247, 0.2); border: 1px solid var(--code-color); }
+
+  #seg-data { border-color: var(--data-color); }
+  #seg-data .segment-title { color: var(--data-color); }
+  .block-data { background: rgba(234, 179, 8, 0.2); border: 1px solid var(--data-color); }
+
+  #seg-stack { border-color: var(--stack-color); min-height: 100px; display: flex; flex-direction: column-reverse; }
+  #seg-stack .segment-title { color: var(--stack-color); }
+  .block-stack { background: rgba(59, 130, 246, 0.2); border: 1px solid var(--stack-color); }
+
+  #seg-heap { border-color: var(--heap-color); min-height: 120px; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; }
+  #seg-heap .segment-title { color: var(--heap-color); }
+  .block-heap { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--heap-color); flex: 1 1 45%; }
+
+  .orphan {
+    border-color: var(--gc-color) !important;
+    background: rgba(244, 63, 94, 0.2) !important;
+    color: #fda4af;
+  }
+
+  .gc-scanning {
+    box-shadow: 0 0 15px var(--gc-color);
+    border-color: var(--gc-color) !important;
+  }
+
+  /* Log Box */
+  .log-box {
+    background: #0b1120;
+    padding: 12px;
+    border-radius: 6px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .log-entry { border-left: 3px solid var(--muted); padding-left: 8px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<h1>Memory Architecture & Garbage Collection</h1>
+<p class="subtitle">Step-by-step visualization of Stack LIFO behavior vs. Heap Dynamic Allocation.</p>
+
+<div class="layout">
+  <div>
+    <div class="panel">
+      <div class="controls">
+        <button id="btnStart" onclick="step1_startApp()">1. Launch Application</button>
+        <button id="btnCall" onclick="step2_callFunction()" disabled>2. Call function createUser()</button>
+        <button id="btnAlloc" onclick="step3_allocateObject()" disabled>3. Heap Alloc: user = new User()</button>
+        <button id="btnReturn" onclick="step4_returnFunction()" disabled>4. Function Returns (Stack Pop)</button>
+        <button id="btnGC" onclick="step5_runGC()" disabled>5. Run Garbage Collector</button>
+        <button onclick="location.reload()" style="margin-top: 10px;">Reset Simulator</button>
+      </div>
+
+      <div class="log-box" id="logBox">
+        <div class="log-entry">System ready. Click "Launch Application" to load into RAM.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="memory-map">
+      <div class="segment" id="seg-code">
+        <div class="segment-title">Code (Text) Segment - Read Only</div>
+        <div id="content-code"></div>
+      </div>
+
+      <div class="segment" id="seg-data">
+        <div class="segment-title">Data Segment - Static/Global</div>
+        <div id="content-data"></div>
+      </div>
+
+      <div class="segment" id="seg-stack">
+        <div class="segment-title">Stack Segment - LIFO (Auto-Managed)</div>
+        <div id="content-stack"></div>
+      </div>
+
+      <div class="segment" id="seg-heap">
+        <div class="segment-title">Heap Segment - Dynamic (GC Managed)</div>
+        <div id="content-heap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function log(msg, color) {
+    const box = document.getElementById('logBox');
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    entry.style.borderLeftColor = color;
+    entry.innerHTML = msg;
+    box.appendChild(entry);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function step1_startApp() {
+    document.getElementById('btnStart').disabled = true;
+    document.getElementById('btnCall').disabled = false;
+
+    // Load Code
+    document.getElementById('content-code').innerHTML = `
+      <div class="block block-code">0x00A1: function createUser() { ... }</div>
+      <div class="block block-code">0x00B2: main() { ... }</div>
+    `;
+    
+    // Load Data
+    document.getElementById('content-data').innerHTML = `
+      <div class="block block-data">global_DB_connection = "connected"</div>
+    `;
+
+    log("<strong>App Launched:</strong> OS loaded machine code into the Code segment and initialized global variables in the Data segment.", "var(--code-color)");
+  }
+
+  function step2_callFunction() {
+    document.getElementById('btnCall').disabled = true;
+    document.getElementById('btnAlloc').disabled = false;
+
+    // Push to Stack
+    const stack = document.getElementById('content-stack');
+    stack.innerHTML += `<div class="block block-stack" id="stack-frame"><strong>createUser() Frame:</strong><br> - return_address = 0x00B2</div>`;
+
+    log("<strong>Function Called:</strong> CPU pushes a new frame onto the Stack. The Stack is self-managing (LIFO).", "var(--stack-color)");
+  }
+
+  function step3_allocateObject() {
+    document.getElementById('btnAlloc').disabled = true;
+    document.getElementById('btnReturn').disabled = false;
+
+    // Allocate on Heap
+    const heap = document.getElementById('content-heap');
+    heap.innerHTML += `<div class="block block-heap" id="heap-obj"><strong>{ User Object }</strong><br>name: "Alice"<br>address: 0x8F9C</div>`;
+
+    // Add pointer to Stack
+    const frame = document.getElementById('stack-frame');
+    frame.innerHTML += `<br> - let user = <span style="color:#10b981">0x8F9C (Pointer)</span>`;
+
+    log("<strong>Dynamic Allocation:</strong> You used <code>new</code>. The actual heavy data goes to the Heap. A lightweight <em>pointer</em> (reference) is saved in your Stack's local variable.", "var(--heap-color)");
+  }
+
+  function step4_returnFunction() {
+    document.getElementById('btnReturn').disabled = true;
+    document.getElementById('btnGC').disabled = false;
+
+    // Pop Stack
+    const stack = document.getElementById('content-stack');
+    stack.innerHTML = ""; // Clears the stack frame instantly
+
+    // Orphan the Heap object
+    const heapObj = document.getElementById('heap-obj');
+    heapObj.className = "block block-heap orphan";
+    heapObj.innerHTML = `<strong>{ User Object } (ORPHANED)</strong><br>name: "Alice"<br>address: 0x8F9C`;
+
+    log("<strong>Function Returns:</strong> CPU automatically pops the function off the Stack. Local variables are destroyed instantly. <em>But wait!</em> The Heap object is still sitting there, taking up RAM. It is now a Memory Leak.", "var(--stack-color)");
+  }
+
+  async function step5_runGC() {
+    document.getElementById('btnGC').disabled = true;
+    
+    const heapSeg = document.getElementById('seg-heap');
+    const heapObj = document.getElementById('heap-obj');
+
+    log("<strong>GC Triggered:</strong> Garbage Collector pauses execution and scans active Stack and Data segments for 'Roots'...", "var(--gc-color)");
+    
+    heapSeg.classList.add('gc-scanning');
+    
+    await new Promise(r => setTimeout(r, 1500));
+    
+    log("<strong>Sweep Phase:</strong> GC notices the Stack pointer to <code>0x8F9C</code> is gone. It identifies the User Object as garbage and deletes it to free RAM.", "var(--gc-color)");
+    
+    heapObj.remove();
+    heapSeg.classList.remove('gc-scanning');
+  }
+</script>
+</body>
+</html>
