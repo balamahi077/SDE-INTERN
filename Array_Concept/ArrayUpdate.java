@@ -9,7 +9,7 @@ public class ArrayUpdate {
 
     /*
     
-      Primitive datatypes are fixed sizevalues, copying them is inexpensive
+      Primitive datatypes are fixed size values, copying them is inexpensive
       Objects(Arrays, Strings, custom Objects) can very from a few bytes to
       gigabytes, so java copies only their reference, not object themselves.
 
