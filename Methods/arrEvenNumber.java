@@ -1,5 +1,4 @@
 package Methods;
-import java.util.*;
 
 public class arrEvenNumber {
     
