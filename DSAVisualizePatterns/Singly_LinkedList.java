@@ -12,45 +12,45 @@ public class Singly_LinkedList {
         head = insertAtStart(401, head);
         printList(head);
 
-        // System.out.println();
-        // System.out.println();
-        // System.out.println("Inserted At the Start");
+        System.out.println();
+        System.out.println();
+        System.out.println("Inserted At the Start");
 
 
-        // head = insertAtStart(402, head);
-        // head = insertAtStart(403, head);
-        // head = insertAtStart(404, head);
-        // head = insertAtStart(405, head);
-        // head = insertAtStart(406, head);
-        // head = insertAtStart(407, head);
+        head = insertAtStart(402, head);
+        head = insertAtStart(403, head);
+        head = insertAtStart(404, head);
+        head = insertAtStart(405, head);
+        head = insertAtStart(406, head);
+        head = insertAtStart(407, head);
 
 
-        // printList(head);
-
-        
-        // insertAtEnd(501, head);
-        // System.out.println();
-        // System.out.println();
-        // System.out.println("Inserted at the end");
-        // printList(head);
+        printList(head);
 
         
+        insertAtEnd(501, head);
+        System.out.println();
+        System.out.println();
+        System.out.println("Inserted at the end");
+        printList(head);
 
-        // // Node head = null;
-        // // head = addToList(401, head);
-        // // head = addToList(402, head);
-        // // head = addToList(403, head);
-        // // head = addToList(404, head);
-        // // printList(head);
+        
 
-        // int lengthOfList = 0;
-        // lengthOfList = countListOfElements(head);
-        // findingMiddleElement(lengthOfList, head);
-
-        // System.out.println();
-        // System.out.println();
-        // System.out.println("Inserted At the Middle");
+        // Node head = null;
+        // head = addToList(401, head);
+        // head = addToList(402, head);
+        // head = addToList(403, head);
+        // head = addToList(404, head);
         // printList(head);
+
+        int lengthOfList = 0;
+        lengthOfList = countListOfElements(head);
+        findingMiddleElement(lengthOfList, head);
+
+        System.out.println();
+        System.out.println();
+        System.out.println("Inserted At the Middle");
+        printList(head);
 
         System.out.println();
         System.out.println();
