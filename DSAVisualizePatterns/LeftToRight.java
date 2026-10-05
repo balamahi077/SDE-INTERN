@@ -46,6 +46,8 @@ public class LeftToRight {
             left++;
             right--;
         }
+
+        
     }
 
     static void printMidFromBothSides(int[] arr)
