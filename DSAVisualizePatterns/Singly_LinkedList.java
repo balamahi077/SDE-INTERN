@@ -4,6 +4,15 @@ public class Singly_LinkedList {
     
     public static void main(String[] args) {
 
+        //testInsertNodeOperations();
+
+        testDeleteNodeOperations();
+        
+    }
+
+
+    public static void testInsertNodeOperations(){
+
         Node head = null;
         printList(head);
         System.out.println();
@@ -57,8 +66,8 @@ public class Singly_LinkedList {
         System.out.println("Inserting After the Key");
         insertAfterKey(666, 10, head);
         printList(head);
-    }
 
+    }
     public static Node insertAtStart(int value, Node currentHead)
     {
         Node newNode = new Node(); // Creation of new node and set the values
@@ -195,6 +204,103 @@ public class Singly_LinkedList {
         }
         newNode.next = keyNode.next;
         keyNode.next = newNode;
+    }
+
+
+    public static void testDeleteNodeOperations()
+    {
+        Node head = null;
+
+        deleteAtStart(head);
+
+        System.out.println();
+        System.out.println("----- Delete At Start -----");
+        head = insertAtStart(89, head);
+        head = insertAtStart(91, head);
+        printList(head);
+        head = deleteAtStart(head);
+        System.out.println();
+        printList(head);
+
+        System.out.println();
+        System.out.println("----- Delete At End ------");
+        head = insertAtStart(89, head);
+        head = insertAtStart(91, head);
+        printList(head);
+        head = deleteAtEnd(head);
+        System.out.println();
+        printList(head);
+
+        System.out.println();
+        System.out.println("------ Delete At Any Position ------");
+        head = insertAtStart(99, head);
+        printList(head);
+        System.out.println();
+        head = deleteAtAnyPosition(91, head);
+        printList(head);
+
+
+    }
+
+    //----------- deletion ------------
+    public static Node  deleteAtStart(Node head)
+    {
+        if(head == null)
+        {
+            System.out.println("List is Empty");
+            return null;
+        }
+        
+        return head.next;
+    }
+
+    public static Node deleteAtEnd(Node head)
+    {
+        Node lastButNode = head;
+        if(head == null || head.next == null)
+        {
+            System.out.println("List is Empty");
+            return null;
+        }
+
+        while(lastButNode.next.next != null)
+        {
+            lastButNode = lastButNode.next;
+        }
+        lastButNode.next = null;
+
+        return head;
+    }
+
+    public static Node deleteAtAnyPosition(int key , Node head)
+    {
+        if(head == null) // if the list is empty it return null
+        {
+            System.out.println("List is Empty");
+            return null;
+        }
+        
+        // First Node value is key, works for single node and multiple node
+        if(head.data == key) // if only one is there that matching with key, return
+            return head.next;
+        else if(head.next == null)
+            return head;
+
+        Node keyNode = head.next;
+        Node preNode = head;
+
+        while(keyNode != null)
+        {
+            if(keyNode.data == key)
+                break;
+            preNode = keyNode;
+            keyNode = keyNode.next;
+        }
+        if(keyNode!= null && keyNode.data == key)
+        {
+            preNode.next = keyNode.next;
+        }
+        return head;
     }
 
 }
