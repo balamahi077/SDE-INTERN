@@ -16,9 +16,6 @@ public class Selection_Sort {
 
 
 
-
-
-
         getSelectionSort(arr);
 
         if(arr != null)
