@@ -12,7 +12,6 @@ public class Anagram {
         String str2 = sc.next();
 
         if (str1.length() != str2.length()) {
-
             System.out.println("Not an Anagram");
 
         } else {
