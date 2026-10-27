@@ -10,10 +10,10 @@ public class Bubble_Sort {
 
     public static void testBubbleSorting()
     {
-        // int[] array = new int[]{5, 4, 3, 2, 1};
+        int[] array = new int[]{5, 4, 3, 2, 1};
         // int[] array = new int[]{5, 4, 19, 2, 3};
         // int[] array = new int[]{10};
-         int[] array = null;
+        //  int[] array = null;
         // int[] array = {};
         // int[] array = new int[]{-5, -4, -19, 2, 3};
         
