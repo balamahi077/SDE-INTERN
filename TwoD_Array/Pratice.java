@@ -5,15 +5,15 @@ public class Pratice {
     public static void main(String[] args) {
 
         int[][] nums ={
-            {3,5,9},
-            {7,6,2},
-            {4,8,1}
+                    {3,5,9},
+                    {7,6,2},
+                    {4,8,1}
         };
 
         int[][] numbers = {
-                            {40, 55, 76},
-                            {98, 66, 49},
-                            {51, 22, 40}
+                        {40, 55, 76},
+                        {98, 66, 49},
+                        {51, 22, 40}
         };
 
         int[][] duplicateVal = {
@@ -84,7 +84,9 @@ public class Pratice {
         System.out.println("Number of Occrences 2 is : " + getNoOfOccrences);
         System.out.println();
 
-
+        boolean keyPresent = isKeyPresentInDiagonal(duplicateVal, 2);
+        System.out.println("Kay present in Diagonal Elements : " + keyPresent);
+        System.out.println();
 
         
     }
@@ -312,6 +314,27 @@ public class Pratice {
         return countOccrences;
     }
 
+    public static boolean isKeyPresentInDiagonal(int[][]nums, int key)
+    {
+        if(nums == null || nums.length == 0)
+            return false;
 
+        if(key < 0)
+            return false;
+
+        boolean foundKey = false;
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = 0; j < nums[i].length; j++)
+            {
+                if(i == j)
+                {
+                    if(nums[i][j] == key)
+                        foundKey = true;
+                }
+            }
+        }
+        return foundKey;
+    }
 }
 
