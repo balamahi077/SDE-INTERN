@@ -16,6 +16,12 @@ public class Pratice {
                             {51, 22, 40}
         };
 
+        int[][] duplicateVal = {
+                            {2, 5, 9},
+                            {7, 6, 2},
+                            {1, 2, 1}
+        };
+
         int getResult = getSumOfElements(nums);
         System.out.println(getResult);
         System.out.println();
@@ -73,7 +79,12 @@ public class Pratice {
         getMultiplyDiagonalElements(nums, 10);
         System.out.println();
 
-        
+
+        int getNoOfOccrences = countNumberOfOccrence(duplicateVal, 2);
+        System.out.println("Number of Occrences 2 is : " + getNoOfOccrences);
+        System.out.println();
+
+
 
         
     }
@@ -281,6 +292,25 @@ public class Pratice {
         }
     }
 
+    public static int countNumberOfOccrence(int[][]nums, int num)
+    {
+        if(nums == null || nums.length == 0)
+            return -1;
+
+        if(num < 0)
+            return -1;
+
+        int countOccrences = 0;
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = 0; j < nums[i].length; j++)
+            {
+                if(nums[i][j] == num)
+                    countOccrences++;
+            }
+        }
+        return countOccrences;
+    }
 
 
 }
