@@ -69,6 +69,10 @@ public class Pratice {
         System.out.println("Printing Min Even Element : " + getMinEvenElementResult);
         System.out.println();
 
+        System.out.println("Printing Multiply Diagonal Elements : ");
+        getMultiplyDiagonalElements(nums, 10);
+        System.out.println();
+
         
 
         
@@ -256,6 +260,28 @@ public class Pratice {
         }
         return minEvenValue;
     }
+
+    public static void getMultiplyDiagonalElements(int[][] nums, int multiplyNumber)
+    {
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = 0; j < nums[i].length; j++)
+            {
+                if(i == j)
+                {
+                    nums[i][j] = nums[i][j] * multiplyNumber;
+                    System.out.print(nums[i][j] + " ");
+                }
+                else
+                {
+                    System.out.print(nums[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+
 
 }
 
