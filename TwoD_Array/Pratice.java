@@ -141,7 +141,6 @@ public class Pratice {
                 }
             }
         }
-        System.out.print("Min Element : ");
         return minElement;
     }
 
@@ -317,9 +316,6 @@ public class Pratice {
     public static boolean isKeyPresentInDiagonal(int[][]nums, int key)
     {
         if(nums == null || nums.length == 0)
-            return false;
-
-        if(key < 0)
             return false;
 
         boolean foundKey = false;
