@@ -15,7 +15,7 @@ public class Stack {
         {
             if(this.top == this.size-1)
             {
-                System.out.println("Stack is Full");
+                // System.out.println("Stack is Full");
             }
             this.top++;
             this.values[this.top] = value;
@@ -25,8 +25,8 @@ public class Stack {
         {
             if(this.top == -1)
             {
-                System.out.println("Stack is Empty Index idiot");
-                return -1000;
+                // System.out.println("Stack is Empty Index idiot");
+                return -1;
             }
             return this.values[this.top];
         }
@@ -36,7 +36,7 @@ public class Stack {
             if(this.top == -1)
             {
                 System.out.println("Stack is Empty idiot");
-                return -1000;
+                return -1;
             }
             int index = this.top;
             this.top--;
