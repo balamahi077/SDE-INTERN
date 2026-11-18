@@ -19,6 +19,11 @@ public class ConvertLower2Upper {
         removingLeadingTrallingSpaces(str);
 
         demoSplit();
+        demoIsEmpty();
+        demoSubstring();
+        demoReplace();
+        demoIndexOf();
+        demoValueOf();
 
     }
 
@@ -61,4 +66,62 @@ public class ConvertLower2Upper {
             System.out.println(wo);
         }
     }
+
+    public static void demoIsEmpty()
+    {
+        String str1 = "";
+        String str2 = "";
+        String str3 = "Hi";
+
+        System.out.println(str1.isEmpty());
+        System.out.println(str2.isEmpty());
+        System.out.println(str3.isEmpty());
+    }
+
+    public static void demoSubstring()
+    {
+        String str = "Programming";
+
+        String str1 = str.substring(3);
+        String str2 = str.substring(1, 9);
+
+        System.out.println(str1);
+        System.out.println(str2);
+    }
+
+    public static void demoReplace()
+    {
+        String str = "Programming";
+
+        String replaceString = str.replace("m", "*");
+
+        System.out.print(replaceString);
+    }
+
+    public static void demoIndexOf()
+    {
+        String web = "www.google.com";
+
+        int str1 = web.indexOf(".");
+        int str2 = web.indexOf(".", 4);
+
+        System.out.println();
+        System.out.println(str1);
+        System.out.println(str2);
+    }
+
+    public static void demoValueOf()
+    {
+        char[] ch = {'B','a','l','a'};
+        int num = 45;
+
+        String str1 = String.valueOf(ch);
+        String str2 = String.valueOf(num);
+
+        System.out.println(str1);
+        System.out.println(str2);
+
+        System.out.println(str1.toString());
+    }
+
 }
