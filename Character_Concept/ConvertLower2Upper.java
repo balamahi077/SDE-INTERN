@@ -15,6 +15,11 @@ public class ConvertLower2Upper {
             System.out.print(character + " ");
         }
 
+        String str = "                           Balakrishna                               ";
+        removingLeadingTrallingSpaces(str);
+
+        demoSplit();
+
     }
 
     public static char[] getConvertedUpperCaseChar(char[] ch)
@@ -34,7 +39,26 @@ public class ConvertLower2Upper {
                 upperCaseArray[index] = (char)upperCase;    
             }
             index++; 
+
+            
         }
         return upperCaseArray;
+    }
+
+    public static void removingLeadingTrallingSpaces(String s)
+    {
+        s = s.trim();
+        System.out.println(s);
+    }
+
+    public static void demoSplit()
+    {
+        String words = "Hi Balakrishna, How are you?";
+        String[] word = words.split(" ");
+
+        for(String wo : word)
+        {
+            System.out.println(wo);
+        }
     }
 }
