@@ -1,0 +1,15 @@
+Stack is Rules and regulation
+    - stack is always varticle container
+
+requirement Collection:
+1) Need space sotring elements
+2) Top pointer 0> index of last elements
+
+what are operations:
+1) push()           --> Insert
+2) pop()            --> Delete
+3) peek() / peep()  --> Look at value(index)
+4) isEmpty()        --> check is stack Empty
+5) isFull()         --> check is stack Full
+6) stackTop()       --> Top most Element
+7) display()        --> display the elements
